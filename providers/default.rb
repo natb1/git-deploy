@@ -7,8 +7,8 @@ action :sync do
     mode "0400"
     content node['deploy']['key']
     sensitive true
-    owner node['deploy']['user']
-    group node['deploy']['user']
+    owner node.deploy.user
+    group node.deploy.user
   end
   
   file "/opt/gitssh" do
@@ -17,21 +17,19 @@ action :sync do
       #!/bin/sh
       exec /usr/bin/ssh -o StrictHostKeyChecking=no -i /opt/deploy_key "$@"
     eos
-    owner node['deploy']['user']
-    group node['deploy']['user']
+    owner node.deploy.user
+    group node.deploy.user
   end
 
   directory new_resource.name do
-    user node['deploy']['user']
-    group node['deploy']['user']
+    user node.deploy.user
+    group node.deploy.user
   end
 
-  git new_resource.name do
-    repository new_resource.repository
-    revision new_resource.revision
-    ssh_wrapper '/opt/gitssh'
-    user node['deploy']['user']
-    group node['deploy']['user']
+  execute 'git the repo' do
+    command "GIT_SSH=/opt/gitssh git clone -b #{new_resource.revision} #{new_resource.repository} #{new_resource.name}"
+    user node.deploy.user
+    group node.deploy.user
   end
-  
+
 end
