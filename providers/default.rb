@@ -30,6 +30,7 @@ action :sync do
     command "GIT_SSH=/opt/gitssh git clone -b #{new_resource.revision} #{new_resource.repository} #{new_resource.name}"
     user node.deploy.user
     group node.deploy.user
+    creates new_resource.name
   end
 
 end
