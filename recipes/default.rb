@@ -7,7 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-git_deploy '/opt/dev-infrastructure' do
-  repository 'git@github.com:natb1/dev-infrastructure.git'
+git_deploy '/opt/git-deploy' do
+  repository 'git@github.com:natb1/git-deploy.git'
+  revision 'master'
 end
 
